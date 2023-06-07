@@ -6,16 +6,18 @@
   "scripts": {
     "dev": "vite",
     "start": "node server/server",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build": "node --max_old_space_size=14336 ./node_modules/.bin/vite build"
   },
   "devDependencies": {
-    "vite": "^4.3.9",
-    "typescript": "^4.6.3",
-    "@vitejs/plugin-react": "^3.0.1",
+    "@types/node": "^20.2.5",
     "@types/react": "^17.0.6",
     "@types/react-dom": "^17.0.5",
     "@types/react-router": "^5.1.14",
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "@vitejs/plugin-react": "^3.0.1",
+    "typescript": "^4.6.3",
+    "vite": "^4.3.9"
   },
   "dependencies": {
     "react": "^17.0.1",
