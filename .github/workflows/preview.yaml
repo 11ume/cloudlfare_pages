@@ -1,9 +1,13 @@
 name: Deploy preview
 
 on:
-  pull_request:
-    types: [opened, synchronize]
-
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch'
+        required: false
+        default: 'main'
+        
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
