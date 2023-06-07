@@ -1,0 +1,36 @@
+name: Deploy preview
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code from the repository
+      - name: 🗂️ Checkout code
+        uses: actions/checkout@v2
+
+      # install dependencies
+      - name: 📦 Install dependencies
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - run: npm install --no-audit
+      
+      # Build project
+      - name: 🏗️ Build project
+        run: npm run build
+      
+      # Publish
+      - name: 🚀 Publish
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: pages publish build --project-name=aula --env preview
+          environment: preview
+        env: 
+          APP_RELEASE: ${{ github.head_ref }}
+          VITE_SENTRY_AUTH_TOKEN: ${{ secrets.VITE_SENTRY_AUTH_TOKEN }}
