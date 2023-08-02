@@ -7,7 +7,7 @@ export default ({ mode }) => {
 
   return defineConfig({
     clearScreen: false,
-    base: '/app/',
+    // base: '/app/',
     build: {
       minify: true,
       sourcemap: true,

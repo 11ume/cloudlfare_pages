@@ -1,1 +1,1 @@
-/app/* /foo 301
+/app/* /:splat 301
