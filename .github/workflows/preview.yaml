@@ -7,7 +7,7 @@ on:
         description: 'Branch'
         required: false
         default: 'main'
-        
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
@@ -33,8 +33,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: pages publish build --project-name=aula --env preview
-          environment: preview
-        env: 
-          APP_RELEASE: ${{ github.head_ref }}
-          VITE_SENTRY_AUTH_TOKEN: ${{ secrets.VITE_SENTRY_AUTH_TOKEN }}
+          command: pages publish --project-name=aula 
+
+          
