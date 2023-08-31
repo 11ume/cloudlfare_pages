@@ -1,0 +1,31 @@
+name: Increment Tag and Run Rundek
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  increment-tag-and-run:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.base.ref }}
+    
+    - name: Get branch name
+      id: get_branch
+      run: |
+        branch_name=$(echo ${{ github.event.pull_request.head.ref }})
+        echo "::set-output name=branch::$branch_name"
+    
+    # Resto de los pasos como en ejemplos anteriores...
+    # ...
+
+    - name: Run Rundek
+      run: |
+        # Aquí ejecuta el comando necesario para "rundek"
+        # Reemplaza esto con el comando real que necesitas ejecutar
+        rundek_command_here
