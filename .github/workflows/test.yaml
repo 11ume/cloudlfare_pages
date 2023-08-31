@@ -12,20 +12,43 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.base.ref }}
     
     - name: Get branch name
       id: get_branch
       run: |
-        branch_name=$(echo ${{ github.event.pull_request.head.ref }})
+        branch_name=$(echo $GITHUB_REF | cut -d "/" -f 3)
         echo "::set-output name=branch::$branch_name"
     
-    # Resto de los pasos como en ejemplos anteriores...
-    # ...
-
-    - name: Run Rundek
+    - name: Get last tag
+      id: get_tag
       run: |
-        # Aquí ejecuta el comando necesario para "rundek"
-        # Reemplaza esto con el comando real que necesitas ejecutar
-        rundek_command_here
+        last_tag=$(git describe --tags --abbrev=0)
+        echo "::set-output name=tag::$last_tag"
+    
+    - name: Extract version parts
+      id: extract_version
+      run: |
+        tag=${{ steps.get_tag.outputs.tag }}
+        version=$(echo $tag | cut -d "v" -f 2)
+        echo "::set-output name=version::$version"
+    
+    - name: Increment version
+      id: increment_version
+      run: |
+        version=${{ steps.extract_version.outputs.version }}
+        new_version=$((version + 1))
+        echo "::set-output name=new_version::$new_version"
+    
+    - name: Create new tag
+      run: |
+        branch_name=${{ steps.get_branch.outputs.branch }}
+        new_version=${{ steps.increment_version.outputs.new_version }}
+        new_tag="v$new_version-$branch_name"
+        git tag $new_tag
+    
+    - name: Push new tag
+      run: |
+        new_version=${{ steps.increment_version.outputs.new_version }}
+        new_tag="v$new_version-$branch_name"
+        git push origin $new_tag
+    
